@@ -1,4 +1,4 @@
 package com.example.cinemaapp
 
-class MainActivity {
+class RegisterActivity {
 }

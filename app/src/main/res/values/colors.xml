@@ -3,4 +3,7 @@
     <color name="red">#FFE03434</color>
     <color name="dark">#FF181818</color>
     <color name="light">#FFF0F0F0</color>
+    <color name="light_grey">#FF777777</color>
+    <color name="grey">#FF444444</color>
+    <color name="dark_grey">#FF313131</color>
 </resources>
