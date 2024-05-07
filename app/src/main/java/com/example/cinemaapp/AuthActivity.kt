@@ -14,7 +14,7 @@ class AuthActivity : ComponentActivity() {
 
         val editTextUsername = findViewById<EditText>(R.id.editTextUsername)
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
-        val buttonLogin = findViewById<Button>(R.id.buttonLogin)
+        val buttonLogin = findViewById<Button>(R.id.buttonRegister)
         val textViewRegister = findViewById<TextView>(R.id.textViewRegister)
 
         buttonLogin.setOnClickListener {
@@ -27,6 +27,10 @@ class AuthActivity : ComponentActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
+            }
+            else{
+                val editTextError = findViewById<TextView>(R.id.textViewError)
+                editTextError.text = "Логин или пароль не верны"
             }
         }
 

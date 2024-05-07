@@ -6,7 +6,7 @@
     android:background="@color/dark">
 
     <LinearLayout
-        android:id="@+id/containerLoginForm"
+        android:id="@+id/containerRegisterForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -18,7 +18,7 @@
             android:id="@+id/textViewTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Авторизация"
+            android:text="Регистрация"
             android:textSize="24sp"
             android:textStyle="bold"
             android:fontFamily="@font/montserrat_medium"
@@ -46,22 +46,11 @@
             android:inputType="textPassword"
             android:layout_marginTop="16dp"/>
 
-        <TextView
-            android:id="@+id/textViewError"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/montserrat_light"
-            android:textColor="@color/red"
-            android:layout_marginBottom="32dp"/>
-
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Войти"
+            android:text="Зарегистрироваться"
             android:textColor="@color/grey"
             android:fontFamily="@font/montserrat_medium"
             android:layout_marginTop="0dp"/>
@@ -70,7 +59,7 @@
             android:id="@+id/textViewRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Не зарегистрированы? Зарегистрироваться"
+            android:text="Уже зарегистрированы? Войти"
             android:textColor="@color/light"
             android:fontFamily="@font/montserrat_regular"
             android:layout_marginTop="16dp"/>
