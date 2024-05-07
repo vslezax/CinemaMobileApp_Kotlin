@@ -58,7 +58,7 @@
             android:layout_marginBottom="32dp"/>
 
         <Button
-            android:id="@+id/buttonRegister"
+            android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Войти"
@@ -67,7 +67,7 @@
             android:layout_marginTop="0dp"/>
 
         <TextView
-            android:id="@+id/textViewRegister"
+            android:id="@+id/textViewToRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Не зарегистрированы? Зарегистрироваться"

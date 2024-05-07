@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.activity.ComponentActivity
-import java.io.OutputStreamWriter
 
 class RegisterActivity : ComponentActivity() {
     private lateinit var registerEditText: EditText
     private lateinit var passwordEditText: EditText
+    private lateinit var database: Database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +16,7 @@ class RegisterActivity : ComponentActivity() {
 
         registerEditText = findViewById(R.id.editTextUsername)
         passwordEditText = findViewById(R.id.editTextPassword)
+        database = Database.getInstance(this)
 
         val registerButton: Button = findViewById(R.id.buttonRegister)
         registerButton.setOnClickListener {
@@ -27,14 +28,8 @@ class RegisterActivity : ComponentActivity() {
         val login = registerEditText.text.toString()
         val password = passwordEditText.text.toString()
 
-        val userData = "$login:$password"
+        val user = User(login, password)
 
-        try {
-            val outputStreamWriter = OutputStreamWriter(resources.openRawResource(R.raw.users))
-            outputStreamWriter.write(userData)
-            outputStreamWriter.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        database.addUser(user)
     }
 }

@@ -6,16 +6,25 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import android.content.Intent
+import android.os.Handler
 
 class AuthActivity : ComponentActivity() {
+    private lateinit var editTextUsername: EditText
+    private lateinit var editTextPassword: EditText
+    private lateinit var textViewError: TextView
+    private lateinit var database: Database
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.auth_layout)
 
-        val editTextUsername = findViewById<EditText>(R.id.editTextUsername)
-        val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
-        val buttonLogin = findViewById<Button>(R.id.buttonRegister)
-        val textViewRegister = findViewById<TextView>(R.id.textViewRegister)
+        editTextUsername = findViewById(R.id.editTextUsername)
+        editTextPassword = findViewById(R.id.editTextPassword)
+        textViewError = findViewById(R.id.textViewError)
+        database = Database.getInstance(this)
+
+        val buttonLogin = findViewById<Button>(R.id.buttonLogin)
+        val textViewRegister = findViewById<TextView>(R.id.textViewToRegister)
 
         buttonLogin.setOnClickListener {
             val username = editTextUsername.text.toString()
@@ -29,8 +38,7 @@ class AuthActivity : ComponentActivity() {
                 finish()
             }
             else{
-                val editTextError = findViewById<TextView>(R.id.textViewError)
-                editTextError.text = "Логин или пароль не верны"
+                showErrorMessage("Логин или пароль не верны")
             }
         }
 
@@ -41,18 +49,17 @@ class AuthActivity : ComponentActivity() {
     }
 
     private fun isUserValid(username: String, password: String): Boolean {
-        val usersRaw = resources.openRawResource(R.raw.users)
-        val usersReader = usersRaw.bufferedReader()
+        val user = database.getUser(username)
+        return user != null && user.password == password
+    }
 
-        usersReader.useLines { lines ->
-            lines.forEach { line ->
-                val (storedUsername, storedPassword) = line.split(":")
-                if (username == storedUsername && password == storedPassword) {
-                    return true
-                }
-            }
-        }
+    private fun showErrorMessage(message: String) {
+        textViewError.text = message
+        textViewError.visibility = TextView.VISIBLE
 
-        return false
+        val handler = Handler()
+        handler.postDelayed({
+            textViewError.visibility = TextView.INVISIBLE
+        }, 3000)
     }
 }
