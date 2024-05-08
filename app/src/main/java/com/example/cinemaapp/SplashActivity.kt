@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.splash_layout)
+
         val intent = Intent(this, AuthActivity::class.java)
         startActivity(intent)
         finish()

@@ -7,6 +7,9 @@ import android.widget.TextView
 import androidx.activity.ComponentActivity
 import android.content.Intent
 import android.os.Handler
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 
 class AuthActivity : ComponentActivity() {
     private lateinit var editTextUsername: EditText
@@ -25,6 +28,18 @@ class AuthActivity : ComponentActivity() {
 
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         val textViewRegister = findViewById<TextView>(R.id.textViewToRegister)
+
+        // Underline text
+        val text = "Не зарегистрированы? Зарегистрироваться"
+        val spannableString = SpannableString(text)
+        spannableString.setSpan(
+            UnderlineSpan(),
+            text.indexOf("Зарегистрироваться"),
+            text.indexOf("Зарегистрироваться") + "Зарегистрироваться".length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        textViewRegister.text = spannableString
+        // Underline text
 
         buttonLogin.setOnClickListener {
             val username = editTextUsername.text.toString()

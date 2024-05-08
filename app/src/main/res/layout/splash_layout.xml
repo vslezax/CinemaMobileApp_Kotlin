@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageViewBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/splash_background"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/imageViewLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/kinoman_logo"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        android:layout_centerInParent="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="KINOMAN"
+        android:fontFamily="@font/montserrat_bold"
+        android:layout_below="@id/imageViewLogo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-260dp"
+        android:textColor="@color/red"
+        android:textSize="24sp"/>
+
+</RelativeLayout>
