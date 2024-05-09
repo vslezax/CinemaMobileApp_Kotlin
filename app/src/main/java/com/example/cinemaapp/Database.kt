@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.io.InputStream
+import java.util.Scanner
 
 class User(_username: String, _password: String) {
     val username: String = _username
@@ -17,8 +19,8 @@ class Film(_title: String, _year: Int, _description: String, _picture: String) {
     val picture: String = _picture
 }
 
-class Database(context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class Database(_context: Context) :
+    SQLiteOpenHelper(_context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         @Volatile
@@ -51,20 +53,22 @@ class Database(context: Context) :
         private const val KEY_USERNAME_FK = "username_fk_id"
         private const val KEY_FILM_FK = "film_fk_id"
     }
+    private val context : Context = _context
 
     override fun onCreate(db: SQLiteDatabase) {
-        // Создание таблицы films
         val createFilmsTable = ("CREATE TABLE $TABLE_FILMS ($KEY_FILM_ID INTEGER PRIMARY KEY,"
                 + "$KEY_TITLE TEXT,"
                 + "$KEY_YEAR INTEGER,"
                 + "$KEY_DESCRIPTION TEXT,"
                 + "$KEY_PICTURE TEXT)")
         db.execSQL(createFilmsTable)
+        readFilmsFile()
 
         // Создание таблицы users
         val createUsersTable = ("CREATE TABLE $TABLE_USERS ($KEY_USERNAME TEXT PRIMARY KEY,"
                 + "$KEY_PASSWORD TEXT)")
         db.execSQL(createUsersTable)
+        readUsersFile()
 
         // Создание таблицы favorites
         val createFavoritesTable = ("CREATE TABLE $TABLE_FAVORITES ($KEY_USERNAME_FK TEXT,"
@@ -73,6 +77,40 @@ class Database(context: Context) :
                 + "FOREIGN KEY ($KEY_USERNAME_FK) REFERENCES $TABLE_USERS($KEY_USERNAME),"
                 + "FOREIGN KEY ($KEY_FILM_FK) REFERENCES $TABLE_FILMS($KEY_FILM_ID))")
         db.execSQL(createFavoritesTable)
+    }
+
+    fun readFilmsFile(){
+        val inputStream: InputStream = context.resources.openRawResource(R.raw.films)
+        val scanner = Scanner(inputStream)
+        while (scanner.hasNextLine()) {
+            val filmData = scanner.nextLine()
+            val filmAttributes = filmData.split(":")
+            val film = Film(
+                filmAttributes[0], // Название фильма
+                filmAttributes[1].toInt(), // Год выпуска
+                filmAttributes[3], // Описание
+                filmAttributes[2] // Название изображения (ресурс)
+            )
+            addFilm(film) // Добавляем фильм в базу данных
+        }
+        scanner.close()
+        inputStream.close()
+    }
+
+    fun readUsersFile(){
+        val inputStream = context.resources.openRawResource(R.raw.users)
+        val scanner = Scanner(inputStream)
+        while (scanner.hasNextLine()) {
+            val userData = scanner.nextLine()
+            val userAttributes = userData.split(":")
+            val user = User(
+                userAttributes[0], // Никнейм
+                userAttributes[1] // Пароль
+            )
+            addUser(user) // Добавляем юзера в базу данных
+        }
+        scanner.close()
+        inputStream.close()
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -178,5 +216,33 @@ class Database(context: Context) :
 
         cursor.close()
         return user
+    }
+
+    fun isUserValid(username: String, password: String): Boolean {
+        val db = this.readableDatabase
+        val selection = "$KEY_USERNAME = ? AND $KEY_PASSWORD = ?"
+        val selectionArgs = arrayOf(username, password)
+        val cursor = db.query(
+            TABLE_USERS,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+        val isValid = cursor.moveToFirst()
+        cursor.close()
+        return isValid
+    }
+
+    fun updateDatabase(){
+        val db = this.writableDatabase
+        db.delete(TABLE_FAVORITES, null, null)
+        db.delete(TABLE_USERS, null, null)
+        db.delete(TABLE_FILMS, null, null)
+
+        readFilmsFile()
+        readUsersFile()
     }
 }

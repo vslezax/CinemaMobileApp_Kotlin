@@ -10,6 +10,7 @@ import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
+import android.util.Log
 
 class AuthActivity : ComponentActivity() {
     private lateinit var editTextUsername: EditText
@@ -24,7 +25,8 @@ class AuthActivity : ComponentActivity() {
         editTextUsername = findViewById(R.id.editTextUsername)
         editTextPassword = findViewById(R.id.editTextPassword)
         textViewError = findViewById(R.id.textViewError)
-        database = Database.getInstance(this)
+        database = Database.getInstance(applicationContext)
+        database.updateDatabase()
 
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         val textViewRegister = findViewById<TextView>(R.id.textViewToRegister)
@@ -45,10 +47,11 @@ class AuthActivity : ComponentActivity() {
             val username = editTextUsername.text.toString()
             val password = editTextPassword.text.toString()
 
-            val isUserValid = isUserValid(username, password)
+            Log.d("AuthActivity", "Username: $username, Password: $password")
 
-            if (isUserValid){
-                val intent = Intent(this, MainActivity::class.java)
+            if (database.isUserValid(username, password)){
+                val intent = Intent(this, AllFilmsActivity::class.java)
+                intent.putExtra("USERNAME", username)
                 startActivity(intent)
                 finish()
             }
@@ -61,11 +64,6 @@ class AuthActivity : ComponentActivity() {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun isUserValid(username: String, password: String): Boolean {
-        val user = database.getUser(username)
-        return user != null && user.password == password
     }
 
     private fun showErrorMessage(message: String) {

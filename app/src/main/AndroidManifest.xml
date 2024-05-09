@@ -37,9 +37,19 @@
             android:theme="@style/MainTheme">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".AllFilmsActivity"
             android:exported="true"
-            android:theme="@style/MainTheme">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".FavoriteFilmsActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+        <activity
+            android:name=".CinemasMapActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
     </application>
 </manifest>
