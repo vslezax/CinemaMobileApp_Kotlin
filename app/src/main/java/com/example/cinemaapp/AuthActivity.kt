@@ -26,7 +26,8 @@ class AuthActivity : ComponentActivity() {
         editTextPassword = findViewById(R.id.editTextPassword)
         textViewError = findViewById(R.id.textViewError)
         database = Database.getInstance(applicationContext)
-        database.updateDatabase()
+        val firstStart = intent.getBooleanExtra("firstStart", false)
+        if (firstStart) database.updateDatabase()
 
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         val textViewRegister = findViewById<TextView>(R.id.textViewToRegister)

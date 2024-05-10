@@ -1,9 +1,11 @@
 package com.example.cinemaapp
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import java.io.InputStream
 import java.util.Scanner
 
@@ -136,6 +138,7 @@ class Database(_context: Context) :
         db.close()
     }
 
+    @SuppressLint("Range")
     fun addUser(user: User) {
         val db = this.writableDatabase
         val values = ContentValues()
@@ -145,6 +148,19 @@ class Database(_context: Context) :
         // Вставляем строку в таблицу users
         db.insert(TABLE_USERS, null, values)
         db.close()
+
+        val db1 = this.readableDatabase
+        val cursor = db1.rawQuery("SELECT * FROM $TABLE_USERS", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val username = cursor.getString(cursor.getColumnIndex(KEY_USERNAME))
+                val password = cursor.getString(cursor.getColumnIndex(KEY_PASSWORD))
+                Log.d("Database", "Username: $username, Password: $password")
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
     }
 
     fun addFavorite(username: String, filmId: Int) {

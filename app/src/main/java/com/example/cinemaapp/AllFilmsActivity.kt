@@ -2,6 +2,7 @@ package com.example.cinemaapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,9 @@ class AllFilmsActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = filmAdapter
         val films: List<Film> = Database.getInstance(this).getAllFilms()
+        for (film in films) {
+            Log.d("AllFilmsActivity", "Film Title: ${film.title}, Year: ${film.year}, Description: ${film.description}, Picture: ${film.picture}")
+        }
         filmAdapter.setFilms(films)
 
         favoriteFilmsIcon.setOnClickListener {

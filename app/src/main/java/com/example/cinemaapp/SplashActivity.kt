@@ -13,6 +13,7 @@ class SplashActivity : AppCompatActivity() {
 
         val intent = Intent(this, AuthActivity::class.java)
         startActivity(intent)
+        intent.putExtra("firstStart", true)
         finish()
     }
 }
